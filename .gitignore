@@ -1,3 +1,4 @@
-*.bin 
-*.o
-*.tmp
+build/*.bin 
+build/*.o
+build/*.tmp
+kernel/scr/*.o
