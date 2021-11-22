@@ -12,6 +12,9 @@ KERNEL_OFFSET equ 0x1000
     call load_kernel
     mov bx, success_disk
     call print_strx16
+    mov ah, 0x00
+    mov al, 0x03
+    int 10h
     call switch_to_x32
     jmp $
 BOOT_DRIVE: db 0
@@ -29,8 +32,6 @@ load_kernel:
 %include "C:\Users\home\Desktop\HexaOS\Csys\boot\scr\switch.asm"
 [bits 32]
 BEGIN_PM: 
-    mov ebx, x32
-    call print_strx32
     call KERNEL_OFFSET
     jmp $
 x32: db 'Done', 0
