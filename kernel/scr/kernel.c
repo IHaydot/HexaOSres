@@ -6,5 +6,6 @@
 #endif
 
 void Entrance(){
-    print();
+    char* _ = (char*) 0xb8000;
+    *_ = 'X';
 }
