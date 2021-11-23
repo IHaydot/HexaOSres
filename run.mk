@@ -20,8 +20,8 @@ os-image: $(BUILD)/kernel.bin $(BUILD)/bootimage.bin
 %.o : %.c $(HEADERS)
 	gcc -ffreestanding -c $< -o $@
 run: os-image
-	qemu-system-x86_64 -fda os-image
+	qemu-system-x86_64 -fda $@
 commit: 
 	git add .
-	git commit -m TODO
+	git commit -m NOT_WORKING!!!
 	git push origin master
