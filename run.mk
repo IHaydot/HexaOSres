@@ -21,7 +21,7 @@ os-image: $(BUILD)/kernel.bin $(BUILD)/bootimage.bin
 	gcc -ffreestanding -c $< -o $@
 run: os-image
 	qemu-system-x86_64 -fda $@
-commit: 
+commit: os-image
 	git add .
 	git commit -m NOT_WORKING!!!
 	git push origin master
