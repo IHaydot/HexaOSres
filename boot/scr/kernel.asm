@@ -1,4 +1,4 @@
 [bits 32]
-[extern _Entrance]
-call _Entrance
+[extern _start]
+call _start
 jmp $

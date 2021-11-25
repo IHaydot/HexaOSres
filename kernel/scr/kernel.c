@@ -1,4 +1,9 @@
+#include <stdint.h>
+void start(){
+    int offset = init_terminal();
+    println("hello", offset);
+    while(1 == 1){
 
-void Entrance(){
-    
+    }
+    __asm__("hlt");
 }
