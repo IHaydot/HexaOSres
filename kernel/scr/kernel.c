@@ -1,7 +1,7 @@
 #include <stdint.h>
 void start(){
-    int offset = init_terminal();
-    println("hello", offset);
+    printSTVM('X');
+
     while(1 == 1){
 
     }

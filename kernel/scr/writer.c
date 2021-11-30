@@ -1,12 +1,12 @@
 #define VIDEO_ADRESS 0xb8000
-#define VGA_COLOR 0x14
+#define VGA_COLOR 0xf1
 #define MAX_ROWS 25
 #define MAX_COLS 80
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5
-
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 enum VGA_COLORS {
     VGA_COLOR_BLACK = 0,
 	VGA_COLOR_BLUE = 1,
@@ -25,36 +25,15 @@ enum VGA_COLORS {
 	VGA_COLOR_LIGHT_BROWN = 14,
 	VGA_COLOR_WHITE = 15,
 };
-
-int init_terminal(int attribute_byte){
-	int row = 0, col = 0, color = attribute_byte;
-	unsigned char *vidmem = (unsigned char *) VIDEO_ADRESS;
-	if(!attribute_byte){
-		color = VGA_COLOR;
-	}
-	int offset;
-	offset = get_screen_offset(row, col, offset);
-
-	return offset;
-}
-
-int get_screen_offset(int row, int col, int offset){
-	port_byte_out(REG_SCREEN_CTRL , 14);
-	port_byte_out(REG_SCREEN_DATA , (unsigned char)( offset >> 8));
-	port_byte_out(REG_SCREEN_CTRL , 15);
-}
-
-void println(const char *chr, char attribute_byte ,int offset){
-    print_char(chr, strlen(chr), offset);
-}
-void print_char(const char *chr, int len, int offset){
-	
-
-}
-int strlen(const char *chr){
-	int len = 0;
-	while(chr[len]){
-		len++;
-	}
-	return len;
+int offset = 0;
+int row = 0;
+int col = 0;
+uint16_t* vga_buffer = (uint16_t*) VIDEO_ADRESS;
+/**
+ * @brief Prints a character on screen, but does it by adding it straight to video memory. This means that it will always be written on cell 1 column 1.
+ * 
+ * @param byte 
+ */
+void printSTVM(char byte){
+	vga_buffer = byte;
 }

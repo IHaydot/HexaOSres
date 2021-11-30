@@ -20,7 +20,7 @@ os-image: $(BUILD)/kernel.bin $(BUILD)/bootimage.bin
 %.o : %.c $(HEADERS)
 	gcc -ffreestanding -c $< -o $@ -w
 run: os-image
-	qemu-system-x86_64 -fda $<
+	qemu-system-x86_64 -drive format=raw,file=$<,if=floppy
 commit: os-image
 	git add .
 	git commit -m NOT_WORKING!!!
