@@ -17,10 +17,14 @@ $(BUILD)/kernelE.o: $(BOOT_SCR)/kernel.asm
 	nasm $(BOOT_SCR)/kernel.asm -f elf -o $(BUILD)/kernelE.o
 os-image: $(BUILD)/kernel.bin $(BUILD)/bootimage.bin
 	copy /b $(BUILD)\bootimage.bin+$(BUILD)\kernel.bin os-image	
+	copy /b $(BUILD)\bootimage.bin+$(BUILD)\kernel.bin os-image.test	
 %.o : %.c $(HEADERS)
 	gcc -ffreestanding -c $< -o $@ -w
-run: os-image
-	qemu-system-x86_64 -drive format=raw,file=$<,if=floppy
+run: 
+	qemu-system-i386 -drive format=raw,file=os-image,if=floppy
+build: os-image
+runT: 
+	qemu-system-i386 -drive format=raw,file=os-image.test,if=floppy
 commit: os-image
 	git add .
 	git commit -m NOT_WORKING!!!

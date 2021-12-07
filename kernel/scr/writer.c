@@ -1,39 +1,72 @@
-#define VIDEO_ADRESS 0xb8000
-#define VGA_COLOR 0xf1
-#define MAX_ROWS 25
-#define MAX_COLS 80
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5
+#define VGA_WIDTH 80
+#define VGA_HEIGHT 25
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-enum VGA_COLORS {
-    VGA_COLOR_BLACK = 0,
-	VGA_COLOR_BLUE = 1,
-	VGA_COLOR_GREEN = 2,
-	VGA_COLOR_CYAN = 3,
-	VGA_COLOR_RED = 4,
-	VGA_COLOR_MAGENTA = 5,
-	VGA_COLOR_BROWN = 6,
-	VGA_COLOR_LIGHT_GREY = 7,
-	VGA_COLOR_DARK_GREY = 8,
-	VGA_COLOR_LIGHT_BLUE = 9,
-	VGA_COLOR_LIGHT_GREEN = 10,
-	VGA_COLOR_LIGHT_CYAN = 11,
-	VGA_COLOR_LIGHT_RED = 12,
-	VGA_COLOR_LIGHT_MAGENTA = 13,
-	VGA_COLOR_LIGHT_BROWN = 14,
-	VGA_COLOR_WHITE = 15,
-};
-int offset = 0;
-int row = 0;
-int col = 0;
-uint16_t* vga_buffer = (uint16_t*) VIDEO_ADRESS;
-/**
- * @brief Prints a character on screen, but does it by adding it straight to video memory. This means that it will always be written on cell 1 column 1.
- * 
- * @param byte 
- */
-void printSTVM(char byte){
-	vga_buffer = byte;
+int index = 0;
+uint16_t cursor_pos;
+uint16_t* VIDEO_MEMORY = (uint16_t*) 0xb8000;
+ 
+uint16_t strlenm(const char* str){
+	size_t len = 0;
+	while(str[len]){
+		len++;
+	}
+	return len;
 }
+
+/*
+ *This function prints a line to the screen
+*/
+void println(const char* str){
+	print_str(str, strlenm(str));
+}
+
+void print_str(const char* str, uint16_t len){
+	for(int i; i < len; i++){
+		print_char(str[i]);
+	}
+}
+
+void print_char(char c){
+	if(c == '\n'){
+		new_line();
+	}
+	if(c == '\c'){
+		clear_screen();
+	}
+	else{
+		print_byte(c);
+	}
+}
+
+void print_byte(char c){
+	VIDEO_MEMORY[cursor_pos] = c;
+}
+
+void set_cursor_position(uint16_t pos){
+	POut(0x3D4, 0x0F);
+	POut(0x3D5, (unsigned char)(pos & 0xff));
+	POut(0x3D4, 0x0e);
+	POut(0x3D5, (unsigned char)((pos >> 8) & 0xff));
+
+	cursor_pos = pos;
+}
+
+uint16_t get_pos_from_coords(unsigned char x, unsigned char y){
+	return y * VGA_WIDTH + x;
+}
+
+void clear_screen(){
+	for(int i = 0; i < 9999; i++){
+		VIDEO_MEMORY[i] = ' ';
+	}
+}
+
+void new_line(){
+	//TODO
+}
+
+

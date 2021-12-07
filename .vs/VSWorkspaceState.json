@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\boot",
+    "\\boot\\scr",
+    "\\build",
+    "\\kernel",
+    "\\kernel\\scr"
+  ],
+  "SelectedNode": "\\run.mk",
+  "PreviewInSolutionExplorer": false
+}
