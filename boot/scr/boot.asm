@@ -22,7 +22,7 @@ booting: db 'Booting...', 0
 success_disk: db 'W', 0
 load_kernel: 
     mov bx, KERNEL_OFFSET
-    mov dh, 15
+    mov dh, 32
     mov dl, [BOOT_DRIVE]
     call init_disk
     ret
