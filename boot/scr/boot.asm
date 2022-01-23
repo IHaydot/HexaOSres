@@ -26,10 +26,10 @@ load_kernel:
     mov dl, [BOOT_DRIVE]
     call init_disk
     ret
-%include "C:\Users\home\Desktop\HexaOS\Csys\boot\scr\writer.asm"
-%include "C:\Users\home\Desktop\HexaOS\Csys\boot\scr\disk.asm"
-%include "C:\Users\home\Desktop\HexaOS\Csys\boot\scr\gdt.asm"
-%include "C:\Users\home\Desktop\HexaOS\Csys\boot\scr\switch.asm"
+%include "boot/scr/writer.asm"
+%include "boot/scr/disk.asm"
+%include "boot/scr/gdt.asm"
+%include "boot/scr/switch.asm"
 [bits 32]
 BEGIN_PM: 
     call KERNEL_OFFSET

@@ -8,16 +8,16 @@ OBJ = ${C_SOURCES:.cpp=.o}
 $(BUILD)/bootimage.bin: $(BOOT_SCR)/boot.asm
 	nasm $(BOOT_SCR)/boot.asm -f bin -o $(BUILD)/bootimage.bin
 $(BUILD)/kernel.o: $(KERNEL_SCR)/kernel.cpp
-	gcc -ffreestanding -c $(KERNEL_SCR)/kernel.cpp -o $(BUILD)/kernel.o -w -O0
+	x86_64-elf-gcc -ffreestanding -c $(KERNEL_SCR)/kernel.cpp -o $(BUILD)/kernel.o -w -O0
 $(BUILD)/kernel.tmp: $(BUILD)/kernel.o $(BUILD)/kernelE.o $(OBJ)
-	ld -T NUL -o $(BUILD)/kernel.tmp -Ttext 0x1000 $(OBJ)
+	x86_64-elf-ld -o $(BUILD)/kernel.tmp -Ttext 0x1000 $(OBJ)
 $(BUILD)/kernel.bin: $(BUILD)/kernel.tmp
-	objcopy -O binary -j .text  $(BUILD)/kernel.tmp $(BUILD)/kernel.bin 
+	x86_64-elf-objcopy -O binary -j .text  $(BUILD)/kernel.tmp $(BUILD)/kernel.bin 
 $(BUILD)/kernelE.o: $(BOOT_SCR)/kernel.asm
 	nasm $(BOOT_SCR)/kernel.asm -f elf -o $(BUILD)/kernelE.o
 os-image: $(BUILD)/kernel.bin $(BUILD)/bootimage.bin
-	copy /b $(BUILD)\bootimage.bin+$(BUILD)\kernel.bin os-image	
-	copy /b $(BUILD)\bootimage.bin+$(BUILD)\kernel.bin os-image.test	
+	cat $(BUILD)/bootimage.bin $(BUILD)/kernel.bin > os-image
+	cat $(BUILD)/bootimage.bin $(BUILD)/kernel.bin > os-image.test	
 %.o : %.cpp $(HEADERS)
 	gcc -ffreestanding -c $< -o $@ -w -O0
 run: os-image
