@@ -5,13 +5,12 @@
 #endif
 
 #include "printing/writer.h"
+#include "sources.h"
 
+#define KERNEL_ENTRANCE_MESSAGE "Kernel successfully entered"
 #pragma endregion
 extern "C" void _main(){
-    char* mem = (char*) 0xb8000;
-    *mem = 'X';
-    print();
-
+    SetCursorPosition(1000);
     while(true){
 
     }

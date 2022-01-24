@@ -9,7 +9,7 @@ $(BUILD)/bootimage.bin: $(BOOT_SCR)/boot.asm
 	nasm $(BOOT_SCR)/boot.asm -f bin -o $(BUILD)/bootimage.bin
 $(BUILD)/kernel.o: $(KERNEL_SCR)/kernel.cpp
 	x86_64-elf-gcc -ffreestanding -c $(KERNEL_SCR)/kernel.cpp -o $(BUILD)/kernel.o -w -O0
-$(BUILD)/kernel.tmp: $(BUILD)/kernel.o $(BUILD)/kernelE.o $(OBJ)
+$(BUILD)/kernel.tmp: $(BUILD)/kernelE.o $(BUILD)/kernel.o $(OBJ)
 	x86_64-elf-ld -o $(BUILD)/kernel.tmp -Ttext 0x1000 $(OBJ)
 $(BUILD)/kernel.bin: $(BUILD)/kernel.tmp
 	x86_64-elf-objcopy -O binary -j .text  $(BUILD)/kernel.tmp $(BUILD)/kernel.bin 
