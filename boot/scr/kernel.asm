@@ -1,6 +1,6 @@
 [bits 32]
 [extern _main]
-call _main
 mov [0xb8000], byte 'H'
+call _main
 jmp $
-times 16384-($-$$) db 0
+times 2048-($-$$) db 0

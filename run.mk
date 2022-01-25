@@ -10,11 +10,11 @@ $(BUILD)/bootimage.bin: $(BOOT_SCR)/boot.asm
 $(BUILD)/kernel.o: $(KERNEL_SCR)/kernel.cpp
 	x86_64-elf-gcc -ffreestanding -c $(KERNEL_SCR)/kernel.cpp -o $(BUILD)/kernel.o -w -O0
 $(BUILD)/kernel.tmp: $(BUILD)/kernelE.o $(BUILD)/kernel.o $(OBJ)
-	x86_64-elf-ld -o $(BUILD)/kernel.tmp -Ttext 0x1000 $(OBJ)
+	x86_64-elf-ld -o $(BUILD)/kernel.tmp -Ttext 0x1000 $(BUILD)/kernelE.o $(OBJ)
 $(BUILD)/kernel.bin: $(BUILD)/kernel.tmp
 	x86_64-elf-objcopy -O binary -j .text  $(BUILD)/kernel.tmp $(BUILD)/kernel.bin 
 $(BUILD)/kernelE.o: $(BOOT_SCR)/kernel.asm
-	nasm $(BOOT_SCR)/kernel.asm -f elf -o $(BUILD)/kernelE.o
+	nasm $(BOOT_SCR)/kernel.asm -f elf64 -o $(BUILD)/kernelE.o
 os-image: $(BUILD)/kernel.bin $(BUILD)/bootimage.bin
 	cat $(BUILD)/bootimage.bin $(BUILD)/kernel.bin > os-image
 	cat $(BUILD)/bootimage.bin $(BUILD)/kernel.bin > os-image.test	
