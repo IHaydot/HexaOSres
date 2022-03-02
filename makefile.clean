@@ -1,0 +1,12 @@
+if [[ -d "kernel"]] 
+then
+    rmdir kernel -r
+fi
+if [[ -d "boot"]] 
+then
+    rmdir kernel -r
+fi
+if [[ -d "build"]] 
+then
+    rmdir kernel -r
+fi
